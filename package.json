@@ -1,0 +1,24 @@
+{
+  "name": "db-connect",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "next dev --port 3000",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@planetscale/database": "^1.19.0",
+    "@prisma/adapter-planetscale": "^6.1.0",
+    "@prisma/client": "^6.1.0",
+    "next": "14.2.4",
+    "react": "^18",
+    "react-dom": "^18"
+  },
+  "devDependencies": {
+    "eslint": "^8",
+    "eslint-config-next": "14.2.4",
+    "prisma": "^6.1.0"
+  }
+}
