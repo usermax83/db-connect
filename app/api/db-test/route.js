@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import prisma from "../../../lib/prisma";
+import prisma from "../../../lib/prisma-example";
 
 export async function POST() {
   // Example query - replace with your actual database query
