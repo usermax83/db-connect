@@ -1,46 +1,22 @@
+import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
-import prisma from "../../../lib/prisma-example";
-
-// Helper function to serialize BigInt
-const serialize = (obj) => {
-  return JSON.parse(
-    JSON.stringify(obj, (_, value) =>
-      typeof value === "bigint" ? value.toString() : value
-    )
-  );
-};
 
 export async function POST() {
-  try {
-    console.log("Testing database connection...");
+  const data = await testConnectionInLoop(1000);
 
-    // Test the connection with a simple query that returns regular integers
-    const result = await prisma.$queryRaw`SELECT CAST(1 AS SIGNED) as test`;
-    console.log("Query successful:", result);
+  return NextResponse.json({
+    success: true,
+    data,
+    timestamp: new Date().toISOString(),
+  });
+}
 
-    return NextResponse.json({
-      success: true,
-      result: serialize(result),
-      timestamp: new Date().toISOString(),
-    });
-  } catch (error) {
-    console.error("Database error:", {
-      name: error.name,
-      message: error.message,
-      code: error.code,
-      meta: error.meta,
-    });
-
-    return NextResponse.json(
-      {
-        success: false,
-        error: error.message,
-        details: {
-          code: error.code,
-          meta: error.meta,
-        },
-      },
-      { status: 500 }
-    );
-  }
+async function testConnectionInLoop(count) {
+  return await Promise.all(
+    Array.from({ length: count }, async (_, i) => {
+      const prisma = new PrismaClient();
+      const data = await prisma.$queryRaw`SELECT "1+1" as result`;
+      return data;
+    })
+  );
 }
